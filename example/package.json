@@ -1,0 +1,11 @@
+{
+  "name": "clown-example",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "test": "node ../bin/clown.js"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0"
+  }
+}

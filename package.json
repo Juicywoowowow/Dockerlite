@@ -1,0 +1,23 @@
+{
+  "name": "clown.js",
+  "version": "0.1.0",
+  "description": "A simple, professional testing framework built from scratch in TypeScript",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "bin": {
+    "clown": "./bin/clown.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "test": "./tests/run-tests.sh",
+    "test:compile": "cd tests && npx tsc"
+  },
+  "keywords": ["testing", "test", "framework", "typescript"],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0"
+  }
+}
