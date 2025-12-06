@@ -1,0 +1,36 @@
+{
+  "name": "wasmley",
+  "version": "1.0.0",
+  "description": "Lua 5.4 runtime compiled to WebAssembly - run Lua in the browser at near-native speed",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "files": [
+    "lua.js",
+    "lua.wasm",
+    "index.js",
+    "index.d.ts"
+  ],
+  "keywords": [
+    "lua",
+    "wasm",
+    "webassembly",
+    "scripting",
+    "interpreter",
+    "runtime",
+    "browser",
+    "emscripten"
+  ],
+  "author": "",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/user/wasmley"
+  },
+  "homepage": "https://github.com/user/wasmley#readme",
+  "bugs": {
+    "url": "https://github.com/user/wasmley/issues"
+  },
+  "engines": {
+    "node": ">=14"
+  }
+}

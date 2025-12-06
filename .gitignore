@@ -1,0 +1,5 @@
+.kiro/
+.vscode/
+.angular/
+./lua-src
+index.html
