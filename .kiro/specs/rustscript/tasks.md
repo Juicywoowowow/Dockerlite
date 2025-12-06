@@ -1,0 +1,253 @@
+# Implementation Plan
+
+- [x] 1. Set up project structure and core types
+  - [x] 1.1 Initialize TypeScript project with tsconfig.json, package.json, and install dependencies (fast-check, typescript, vitest)
+    - Create directory structure: src/, tests/unit/, tests/property/, tests/generators/
+    - Configure TypeScript with strict mode
+    - _Requirements: 9.1_
+  - [x] 1.2 Implement core type definitions for SourceLocation, SourceSpan, and CompilerError
+    - Create src/types/common.ts with location and error types
+    - _Requirements: 7.1, 7.2_
+  - [x] 1.3 Implement Token types and TokenKind enum
+    - Create src/types/token.ts with all token kinds
+    - _Requirements: 2.1, 2.5, 2.6_
+  - [x] 1.4 Implement AST node type definitions
+    - Create src/types/ast.ts with all AST node interfaces
+    - _Requirements: 3.1_
+  - [x] 1.5 Implement Type system type definitions
+    - Create src/types/type.ts with PrimitiveType, StructType, EnumType, FunctionType, GenericType
+    - _Requirements: 6.1, 6.3, 6.4, 6.5, 6.6_
+
+- [x] 2. Implement Lexer
+  - [x] 2.1 Implement core Lexer class with tokenize method
+    - Create src/lexer/lexer.ts
+    - Handle source position tracking (line, column, offset)
+    - _Requirements: 2.8_
+  - [x] 2.2 Implement keyword and identifier recognition
+    - Recognize all RustScript keywords (let, mut, fn, struct, enum, impl, if, else, while, for, match, return, pub, const, type, trait, use, mod)
+    - Recognize valid identifiers (letter/underscore followed by alphanumeric/underscore)
+    - _Requirements: 2.1, 2.2_
+  - [x] 2.3 Implement literal tokenization (numbers, strings, chars, bools)
+    - Handle integer and floating-point numbers
+    - Handle double-quoted strings with escape sequences
+    - Handle character literals and boolean literals
+    - _Requirements: 2.3, 2.4_
+  - [x] 2.4 Implement operator and delimiter tokenization
+    - Handle arithmetic, comparison, logical, and assignment operators
+    - Handle all delimiters (parentheses, braces, brackets, punctuation)
+    - _Requirements: 2.5, 2.6_
+  - [x] 2.5 Implement whitespace and comment handling
+    - Skip whitespace
+    - Handle single-line (//) and multi-line (/* */) comments
+    - _Requirements: 2.7_
+  - [x] 2.6 Implement lexer error reporting for unrecognized characters
+    - Report error with character and location
+    - _Requirements: 2.9_
+  - [ ]* 2.7 Write property test for lexer token location accuracy
+    - **Property 2: Lexer Token Location Accuracy**
+    - **Validates: Requirements 2.8**
+  - [ ]* 2.8 Write property test for lexer completeness
+    - **Property 3: Lexer Completeness**
+    - **Validates: Requirements 2.1, 2.2, 2.3, 2.4, 2.5, 2.6**
+  - [ ]* 2.9 Write property test for comment and whitespace transparency
+    - **Property 4: Comment and Whitespace Transparency**
+    - **Validates: Requirements 2.7**
+
+- [x] 3. Implement Parser
+  - [x] 3.1 Implement Parser class with token stream management
+    - Create src/parser/parser.ts
+    - Implement peek, advance, expect, match utilities
+    - _Requirements: 3.1_
+  - [x] 3.2 Implement expression parsing
+    - Parse literals, identifiers, binary operations, unary operations
+    - Parse function calls and member access
+    - Handle operator precedence
+    - _Requirements: 3.6_
+  - [x] 3.3 Implement statement parsing
+    - Parse let statements with optional mut, type annotation, and initializer
+    - Parse return statements
+    - Parse expression statements
+    - _Requirements: 3.3_
+  - [x] 3.4 Implement control flow parsing
+    - Parse if/else expressions
+    - Parse while and for loops
+    - Parse match expressions with arms
+    - _Requirements: 3.7_
+  - [x] 3.5 Implement declaration parsing
+    - Parse function declarations with parameters and return types
+    - Parse struct declarations with fields
+    - Parse enum declarations with variants
+    - _Requirements: 3.2, 3.4, 3.5_
+  - [x] 3.6 Implement type annotation parsing
+    - Parse primitive types, generic types (Option<T>, Result<T,E>, Vec<T>)
+    - Parse user-defined types
+    - _Requirements: 6.1, 6.2, 6.3, 6.4, 6.5, 6.6_
+  - [x] 3.7 Implement parser error reporting and recovery
+    - Report syntax errors with location and expected tokens
+    - Implement synchronization for error recovery
+    - _Requirements: 3.8_
+
+- [x] 4. Implement Pretty Printer
+  - [x] 4.1 Implement PrettyPrinter class
+    - Create src/printer/printer.ts
+    - Handle indentation and formatting
+    - _Requirements: 3.10_
+  - [x] 4.2 Implement AST node printing for all node types
+    - Print declarations (functions, structs, enums)
+    - Print statements and expressions
+    - Print type annotations
+    - _Requirements: 3.10_
+  - [ ]* 4.3 Write property test for parser round-trip consistency
+    - **Property 1: Parser Round-Trip Consistency**
+    - **Validates: Requirements 3.9, 3.10**
+
+- [x] 5. Implement AST Serialization
+  - [x] 5.1 Implement AST to JSON serialization
+    - Create src/ast/serializer.ts
+    - Handle all AST node types
+    - _Requirements: 3.9_
+  - [x] 5.2 Implement JSON to AST deserialization
+    - Validate JSON structure
+    - Reconstruct AST nodes
+    - _Requirements: 3.9_
+  - [ ]* 5.3 Write property test for AST serialization round-trip
+    - **Property 15: AST Serialization Round-Trip**
+    - **Validates: Requirements 3.9**
+
+- [x] 6. Checkpoint - Ensure all tests pass
+  - Ensure all tests pass, ask the user if questions arise.
+
+- [x] 7. Implement Type Checker
+  - [x] 7.1 Implement TypeChecker class with type environment
+    - Create src/typeChecker/typeChecker.ts
+    - Implement scoped symbol table for variables and functions
+    - _Requirements: 4.1_
+  - [x] 7.2 Implement type inference for expressions
+    - Infer types for literals, identifiers, binary/unary operations
+    - Infer types for function calls and member access
+    - _Requirements: 4.3_
+  - [x] 7.3 Implement type checking for declarations
+    - Check function declarations (parameter types, return type)
+    - Check struct and enum declarations
+    - _Requirements: 4.5_
+  - [x] 7.4 Implement type checking for statements
+    - Check let statements with type annotation validation
+    - Check assignments for type compatibility and mutability
+    - _Requirements: 4.2, 4.8_
+  - [x] 7.5 Implement function call type checking
+    - Verify argument count and types match parameters
+    - _Requirements: 4.4_
+  - [x] 7.6 Implement binary operation type checking
+    - Verify operand types are compatible with operators
+    - _Requirements: 4.6_
+  - [x] 7.7 Implement struct field access type checking
+    - Verify field exists and return its type
+    - _Requirements: 4.7_
+  - [x] 7.8 Implement type error reporting
+    - Report errors with location, expected type, and actual type
+    - _Requirements: 4.9_
+  - [ ]* 7.9 Write property test for type inference determinism
+    - **Property 5: Type Inference Determinism**
+    - **Validates: Requirements 4.3**
+  - [ ]* 7.10 Write property test for mutability enforcement
+    - **Property 6: Mutability Enforcement**
+    - **Validates: Requirements 4.8**
+  - [ ]* 7.11 Write property test for type annotation consistency
+    - **Property 7: Type Annotation Consistency**
+    - **Validates: Requirements 4.2**
+  - [ ]* 7.12 Write property test for function call type safety
+    - **Property 8: Function Call Type Safety**
+    - **Validates: Requirements 4.4**
+
+- [x] 8. Implement Code Generator
+  - [x] 8.1 Implement CodeGenerator class
+    - Create src/codeGenerator/codeGenerator.ts
+    - Handle indentation and output formatting
+    - _Requirements: 5.1_
+  - [x] 8.2 Implement function declaration code generation
+    - Emit JavaScript function declarations
+    - _Requirements: 5.2_
+  - [x] 8.3 Implement struct declaration code generation
+    - Emit JavaScript classes with constructors
+    - _Requirements: 5.3_
+  - [x] 8.4 Implement enum declaration code generation
+    - Emit JavaScript object constants for variants
+    - _Requirements: 5.4_
+  - [x] 8.5 Implement let binding code generation
+    - Emit const for immutable, let for mutable
+    - _Requirements: 5.5_
+  - [x] 8.6 Implement expression code generation
+    - Generate JavaScript for all expression types
+    - _Requirements: 5.1_
+  - [x] 8.7 Implement control flow code generation
+    - Generate if/else, while, for statements
+    - Generate switch/if-else for match expressions
+    - _Requirements: 5.6_
+  - [ ]* 8.8 Write property test for code generator JavaScript validity
+    - **Property 9: Code Generator JavaScript Validity**
+    - **Validates: Requirements 5.1**
+  - [ ]* 8.9 Write property test for let binding mutability mapping
+    - **Property 10: Let Binding Mutability Mapping**
+    - **Validates: Requirements 5.5**
+
+- [x] 9. Checkpoint - Ensure all tests pass
+  - Ensure all tests pass, ask the user if questions arise.
+
+- [x] 10. Implement Error Reporter
+  - [x] 10.1 Implement ErrorReporter class
+    - Create src/errors/reporter.ts
+    - Collect and format errors
+    - _Requirements: 7.1, 7.2, 7.3_
+  - [x] 10.2 Implement error formatting with source context
+    - Display file name, line, column
+    - Display source line with caret pointing to error
+    - _Requirements: 7.1, 7.2_
+  - [x] 10.3 Implement multi-error collection
+    - Continue compilation to find multiple errors
+    - _Requirements: 7.4_
+  - [ ]* 10.4 Write property test for multi-error reporting
+    - **Property 12: Multi-Error Reporting**
+    - **Validates: Requirements 7.4**
+  - [ ]* 10.5 Write property test for error location completeness
+    - **Property 13: Error Location Completeness**
+    - **Validates: Requirements 7.1, 7.2, 7.3**
+
+- [x] 11. Implement CLI
+  - [x] 11.1 Implement CLI argument parser
+    - Create src/cli/cli.ts
+    - Parse input files, -o/--output, -h/--help, -v/--version flags
+    - _Requirements: 8.1, 8.2, 8.3, 8.4, 8.5_
+  - [x] 11.2 Implement config loader for tsconfig.json
+    - Create src/config/loader.ts
+    - Read rustscript section from tsconfig.json
+    - _Requirements: 9.1, 9.2_
+  - [x] 11.3 Implement file extension validation
+    - Accept only .rusp files
+    - _Requirements: 1.1, 1.2_
+  - [x] 11.4 Implement compilation pipeline orchestration
+    - Wire together lexer, parser, type checker, code generator
+    - Write output .js files
+    - _Requirements: 1.3_
+  - [ ]* 11.5 Write property test for file extension validation
+    - **Property 11: File Extension Validation**
+    - **Validates: Requirements 1.1, 1.2**
+  - [ ]* 11.6 Write property test for configuration option application
+    - **Property 14: Configuration Option Application**
+    - **Validates: Requirements 9.2, 9.3**
+
+- [ ] 12. Implement Test Generators
+  - [ ] 12.1 Implement token generator for property tests
+    - Create tests/generators/token.generator.ts
+    - Generate valid tokens of all kinds
+    - _Requirements: 2.1-2.6_
+  - [ ] 12.2 Implement AST generator for property tests
+    - Create tests/generators/ast.generator.ts
+    - Generate valid AST nodes of all types
+    - _Requirements: 3.1-3.7_
+  - [ ] 12.3 Implement source code generator for property tests
+    - Create tests/generators/source.generator.ts
+    - Generate valid RustScript source code
+    - _Requirements: 3.10_
+
+- [x] 13. Final Checkpoint - Ensure all tests pass
+  - Ensure all tests pass, ask the user if questions arise.
